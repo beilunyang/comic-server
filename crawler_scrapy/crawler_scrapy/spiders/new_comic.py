@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-import json
 import scrapy
+import json
 from scrapy.http.request import Request
 from crawler_scrapy.items import ComicItem, ChapterItem
 
 
-class ComicSpider(scrapy.Spider):
-    name = "comic"
+class NewComicSpider(scrapy.Spider):
+    name = "new_comic"
     allowed_domains = ["v2.api.dmzj.com"]
-    start_urls = ['http://v2.api.dmzj.com/classify/0/1/%d.json?channel=ios&version=2.1.9' %i for i in range(2400)]
+    start_urls = ['http://v2.api.dmzj.com/latest/100/%d.json?channel=ios&version=2.1.9' %i for i in range(11)]
 
     def parse(self, response):
         data = json.loads(response.body.decode('utf-8'))
         for comic in data:
             yield Request('http://v2.api.dmzj.com/comic/%d.json?channel=ios&version=2.1.9' %comic['id'], callback = self.parse_comic)
-
+          
     def parse_comic(self, response):
         data = json.loads(response.body.decode('utf-8'))
         item = ComicItem()
@@ -42,4 +42,3 @@ class ComicSpider(scrapy.Spider):
         item['order'] = data['chapter_order']
         item['origin_images'] = data['page_url']
         yield item
-

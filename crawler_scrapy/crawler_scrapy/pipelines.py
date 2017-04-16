@@ -10,8 +10,9 @@ import scrapy
 import re
 import os
 from scrapy.exceptions import DropItem
-from scrapy.pipelines.images import ImagesPipeline
-from crawler_scrapy.settings import DATABASE, IMAGES_STORE
+# from scrapy.pipelines.images import ImagesPipeline
+# from crawler_scrapy.settings import DATABASE, IMAGES_STORE
+from crawler_scrapy.settings import DATABASE
 from crawler_scrapy.items import ComicItem, ChapterItem
 
 class MongoPipeline(object):
@@ -32,68 +33,71 @@ class MongoPipeline(object):
          if isinstance(item, ComicItem):
             self.comic.insert(dict(item))
          elif isinstance(item, ChapterItem):
-            if item['ok']:
-               del item['comic_name']
-               del item['ok']
-               self.chapter.insert(dict(item))
-               item['ok'] = True
+            # if item['ok']:
+            #    del item['comic_name']
+            #    del item['ok']
+            #    self.chapter.insert(dict(item))
+            #    item['ok'] = True
+            self.chapter.insert(dict(item))
+            item['ok'] = True
       except pymongo.errors.DuplicateKeyError:
          raise DropItem('Duplicate item found: %s' %item)
-      except:
+      except Exception as e:
+         print(e)
          item['ok'] = False
       return item  
 
-class MyImagesPipeline(ImagesPipeline):
-   def get_media_requests(self, item, info):
-      if isinstance(item, ChapterItem):
-         for image_url in item['origin_images']:
-            host = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', image_url).group(1)
-            yield scrapy.Request(image_url, headers = { 'Referer': host })
-      elif isinstance(item, ComicItem):
-         host = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', item['origin_cover']).group(1)
-         yield scrapy.Request(item['origin_cover'], headers = { 'Referer': host })
+# class MyImagesPipeline(ImagesPipeline):
+#    def get_media_requests(self, item, info):
+#       if isinstance(item, ChapterItem):
+#          for image_url in item['origin_images']:
+#             host = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', image_url).group(1)
+#             yield scrapy.Request(image_url, headers = { 'Referer': host })
+#       elif isinstance(item, ComicItem):
+#          host = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', item['origin_cover']).group(1)
+#          yield scrapy.Request(item['origin_cover'], headers = { 'Referer': host })
          
 
-   def item_completed(self, results, item, info):
-      image_paths = []
-      urls = []
-      for ok, x in results:
-         if ok:
-            image_paths.append(x['path'])
-            urls.append(x['url'])
+#    def item_completed(self, results, item, info):
+#       image_paths = []
+#       urls = []
+#       for ok, x in results:
+#          if ok:
+#             image_paths.append(x['path'])
+#             urls.append(x['url'])
 
 
-      if isinstance(item, ChapterItem):
-         if not image_paths or len(image_paths) != len(results):
-            item['ok'] = False
-         else:
-            item['ok'] = True
+#       if isinstance(item, ChapterItem):
+#          if not image_paths or len(image_paths) != len(results):
+#             item['ok'] = False
+#          else:
+#             item['ok'] = True
 
-         item['images'] = []
-         for i in range(len(image_paths)):
-            filename = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', urls[i]).group(2)
-            src = '%s/%s' %(IMAGES_STORE, image_paths[i])
-            dist = '%s/%s/%s/%s' %(IMAGES_STORE, item['comic_name'], item['cate'], item['title'])
-            dist_file = '%s/%s' %(dist, filename)
-            if os.path.exists(dist):
-               os.rename(src, dist_file)
-            else:
-               os.makedirs(dist)
-               os.rename(src, dist_file)
-            item['images'].append('%s/%s/%s/%s' %(item['comic_name'], item['cate'], item['title'], filename))
-      elif isinstance(item, ComicItem):
-         for i in range(len(image_paths)):
-            filename = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', urls[i]).group(2)
-            src = '%s/%s' %(IMAGES_STORE, image_paths[i])
-            dist = '%s/%s' %(IMAGES_STORE, item['title'])
-            dist_file = '%s/%s' %(dist, filename)
-            if os.path.exists(dist):
-               os.rename(src, dist_file)
-            else:
-               os.makedirs(dist)
-               os.rename(src, dist_file)
-            item['cover'] = '%s/%s' %(item['title'], filename)
-      return item
+#          item['images'] = []
+#          for i in range(len(image_paths)):
+#             filename = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', urls[i]).group(2)
+#             src = '%s/%s' %(IMAGES_STORE, image_paths[i])
+#             dist = '%s/%s/%s/%s' %(IMAGES_STORE, item['comic_name'], item['cate'], item['title'])
+#             dist_file = '%s/%s' %(dist, filename)
+#             if os.path.exists(dist):
+#                os.rename(src, dist_file)
+#             else:
+#                os.makedirs(dist)
+#                os.rename(src, dist_file)
+#             item['images'].append('%s/%s/%s/%s' %(item['comic_name'], item['cate'], item['title'], filename))
+#       elif isinstance(item, ComicItem):
+#          for i in range(len(image_paths)):
+#             filename = re.match(r'(^http:\/\/.+?\/).*\/(.+?$)', urls[i]).group(2)
+#             src = '%s/%s' %(IMAGES_STORE, image_paths[i])
+#             dist = '%s/%s' %(IMAGES_STORE, item['title'])
+#             dist_file = '%s/%s' %(dist, filename)
+#             if os.path.exists(dist):
+#                os.rename(src, dist_file)
+#             else:
+#                os.makedirs(dist)
+#                os.rename(src, dist_file)
+#             item['cover'] = '%s/%s' %(item['title'], filename)
+#       return item
 
    # https://segmentfault.com/q/1010000000413334
    # 重载了文档中没有提及的file_path方法，侵入性更强，但速度应该会更快
@@ -132,7 +136,7 @@ class RedisPipeline(object):
       self.client = redis.Redis(connection_pool=pool)
 
    def close_spider(self, spider):
-      self.client.quit()
+      pass
 
    def process_item(self, item, spider):
       if isinstance(item, ChapterItem):

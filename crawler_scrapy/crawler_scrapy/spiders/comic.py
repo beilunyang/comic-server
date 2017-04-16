@@ -28,7 +28,8 @@ class ComicSpider(scrapy.Spider):
         item['finished'] = True if data['status'][0]['tag_name'] == '已完结' else False
         for cat in data['chapters']:
             for chapter in cat['data']:
-                yield Request('http://v2.api.dmzj.com/chapter/%d/%d.json?channel=ios&version=2.1.9' % (data['id'], chapter['chapter_id']), callback = self.parse_chapter, meta = { 'cate': cat['title'], 'mid': data['id'], 'comic_name': data['title'] })
+                # yield Request('http://v2.api.dmzj.com/chapter/%d/%d.json?channel=ios&version=2.1.9' % (data['id'], chapter['chapter_id']), callback = self.parse_chapter, meta = { 'cate': cat['title'], 'mid': data['id'], 'comic_name': data['title'] })
+                yield Request('http://v2.api.dmzj.com/chapter/%d/%d.json?channel=ios&version=2.1.9' % (data['id'], chapter['chapter_id']), callback = self.parse_chapter, meta = { 'cate': cat['title'], 'mid': data['id'] })
         yield item
 
     def parse_chapter(self, response):
@@ -36,7 +37,7 @@ class ComicSpider(scrapy.Spider):
         item = ChapterItem()
         item['cate'] = response.meta['cate']
         item['mid'] = response.meta['mid']
-        item['comic_name'] = response.meta['comic_name']
+        # item['comic_name'] = response.meta['comic_name']
         item['pid'] = data['chapter_id']
         item['title'] = data['title']
         item['order'] = data['chapter_order']

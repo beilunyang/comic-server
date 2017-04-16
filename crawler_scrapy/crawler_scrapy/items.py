@@ -11,7 +11,7 @@ class ComicItem(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     title = Field()
-    cover = Field()
+    #cover = Field()
     origin_cover = Field()
     description = Field()
     update_time = Field()
@@ -25,9 +25,9 @@ class ChapterItem(Item):
     order = Field()
     cate = Field()
     origin_images = Field()
-    images = Field()
+    #images = Field()
     mid = Field()
     pid = Field()
     # 不入库
-    comic_name = Field()
+    # comic_name = Field()
     ok = Field()

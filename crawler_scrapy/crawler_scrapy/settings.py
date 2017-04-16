@@ -74,12 +74,12 @@ DOWNLOADER_MIDDLEWARES = {
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 	#'scrapy.pipelines.images.ImagesPipeline': 200,
-	'crawler_scrapy.pipelines.MyImagesPipeline': 100,
+	#'crawler_scrapy.pipelines.MyImagesPipeline': 100,
 	'crawler_scrapy.pipelines.MongoPipeline': 200,
 	'crawler_scrapy.pipelines.RedisPipeline': 300,
 }
 
-IMAGES_STORE = '../comics'
+# IMAGES_STORE = '../comics'
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html

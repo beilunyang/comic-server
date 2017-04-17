@@ -9,9 +9,9 @@ const ComicSchema = mongoose.Schema({
     type: String,
     default: '',
   },
-  cover: {
-    type: String,
-    default: '',
+  mid: {
+    type: Number,
+    required: true,
   },
   description: {
     type: String,
@@ -35,8 +35,12 @@ const ComicSchema = mongoose.Schema({
   },
 });
 const ChapterSchema = mongoose.Schema({
-  comic_id: {
-    type: mongoose.Schema.Types.ObjectId,
+  mid: {
+    type: Number,
+    required: true,
+  },
+  pid: {
+    type: Number,
     required: true,
   },
   title: {
@@ -50,20 +54,24 @@ const ChapterSchema = mongoose.Schema({
     type: String,
     default: '',
   },
-  origin_content: {
+  origin_images: {
     type: Array,
     default: [],
   },
-  content: {
-    type: Array,
-    default: [],
-  }
 });
 
-ComicSchema.index({ title: 1, description: 1 }, { unique: true });
-ChapterSchema.index({ comic_id: 1, cate: 1, title: 1 }, { unique: true });
+const CateSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+});
+
+ComicSchema.index({ mid: 1 }, { unique: true });
+ChapterSchema.index({ cid: 1 }, { unique: true });
 export const Comic = mongoose.model('Comic', ComicSchema);
 export const Chapter = mongoose.model('Chapter', ChapterSchema);
+export const Cate = mongoose.model('Cate', CateSchema);
 
 
 

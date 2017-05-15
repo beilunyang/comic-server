@@ -20,4 +20,8 @@ export default {
     },
     port: 12345
   },
+  wx: {
+    appid: 'wx238573b9edd70425',
+    secret: 'a4cddfe32a7c7e360a592a910c4fb72f'
+  }
 };

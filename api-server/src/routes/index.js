@@ -1,6 +1,7 @@
 import Router from 'koa-router';
 import user from './user';
 import comic from './comic';
+import wxlogin from './wxlogin';
 import { ensureLogin } from './privilege';
 import { swagDocHandler } from '../utils';
 
@@ -8,9 +9,7 @@ const router = new Router({
   prefix: '/api/v1',
 });
 
-router.get('/', ctx => {
-  ctx.body = 'HELLO WORLD';
-});
+router.use('/wxlogin', wxlogin.routes());
 
 // return swagger doc json data.
 // open [http://swagger.daguchuangyi.com/?url=http://localhost:8888/swagger.json#!]

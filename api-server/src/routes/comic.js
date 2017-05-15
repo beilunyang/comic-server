@@ -10,7 +10,7 @@ router.get('/page/:page', async (ctx) => {
     page = 1;
   }
   ctx.body = await Comic.find().skip((page - 1) * 15).limit(15).select('-__v')
-                      .exec();
+    .exec();
 });
 
 router.get('/cate', async (ctx) => {
@@ -25,23 +25,72 @@ router.get('/cate/:cate/page/:page', async (ctx) => {
   if (isNaN(page) || page < 1) {
     page = 1;
   }
+  if (page === 1) {
+    const [comics, total] = await Promise.all([
+      Comic.find({
+        types: { $in: [ctx.params.cate] },
+      }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec(),
+      Comic.find({
+        types: { $in: [ctx.params.cate] },
+      }).count(),
+    ]);
+    ctx.body = {
+      total,
+      comics,
+    };
+    return;
+  }
   ctx.body = await Comic.find({
     types: { $in: [ctx.params.cate] },
   }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
 });
 
-router.get('/search/:field', async (ctx) => {
+router.get('/search/:keyword/page/:page', async (ctx) => {
   console.log('search');
-  const regx = new RegExp(ctx.params.field, 'i');
-  ctx.body = await Comic.find({ $or: [
-    {
-      title: regx,
-    },
-    {
-      authors: { $in: [regx] },
-    },
-  ]
-  }).select('-__v -_id').exec();
+  const regx = new RegExp(ctx.params.keyword, 'i');
+  let page = Number(ctx.params.page);
+  if (isNaN(page) || page < 1) {
+    page = 1;
+  }
+  if (page === 1) {
+    const [comics, total] = await Promise.all([
+      Comic.find({
+        $or: [
+          {
+            title: regx,
+          },
+          {
+            authors: { $in: [regx] },
+          },
+        ]
+      }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec(),
+      Comic.find({
+        $or: [
+          {
+            title: regx,
+          },
+          {
+            authors: { $in: [regx] },
+          },
+        ]
+      }).count(),
+    ]);
+    ctx.body = {
+      total,
+      comics,
+    };
+    return;
+  }
+  ctx.body = await Comic.find({
+    $or: [
+      {
+        title: regx,
+      },
+      {
+        authors: { $in: [regx] },
+      },
+    ]
+  }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
 });
 
 router.get('/theme', async (ctx) => {
@@ -56,8 +105,7 @@ router.get('/recommend', async (ctx) => {
 
 router.get('/:id', async (ctx) => {
   console.log('get chapter');
-  let mid = Number(ctx.params.id);
-  mid = 21996;
+  const mid = Number(ctx.params.id);
   // TODO: 性能优化
   const comic = await Comic.findOne({ mid }).select('-__v -_id').exec();
   const p = [];

@@ -13,12 +13,14 @@ class ComicItem(Item):
     title = Field()
     #cover = Field()
     origin_cover = Field()
+    origin = Field()
     description = Field()
     update_time = Field()
     types = Field()
     finished = Field()
     authors = Field()
     mid = Field()
+    chapter_cates = Field()
 
 class ChapterItem(Item):
     title = Field()

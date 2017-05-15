@@ -2,6 +2,7 @@
 .vscode
 comics
 dump.rdb
+py3env
 
 # Logs
 logs

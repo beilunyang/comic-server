@@ -9,7 +9,7 @@ from crawler_scrapy.items import ComicItem, ChapterItem
 class ComicSpider(scrapy.Spider):
     name = "comic"
     allowed_domains = ["v2.api.dmzj.com"]
-    start_urls = ['http://v2.api.dmzj.com/classify/0/1/%d.json?channel=ios&version=2.1.9' %i for i in range(2400)]
+    start_urls = ['http://v2.api.dmzj.com/classify/0/1/%d.json?channel=ios&version=2.1.9' %i for i in range(2407)]
 
     def parse(self, response):
         data = json.loads(response.body.decode('utf-8'))

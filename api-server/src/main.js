@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import BodyParser from 'koa-bodyparser';
+import bodyParser from 'koa-bodyparser';
 import log from 'log';
 import config from 'config';
 import router from 'routes';
@@ -17,7 +17,7 @@ process.on('uncaughtException', err => {
 const app = new Koa();
 
 db.init();
-app.use(BodyParser());
+app.use(bodyParser());
 app.use(cors());
 
 app.use(router.routes());

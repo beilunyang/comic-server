@@ -1,8 +1,7 @@
 import Router from 'koa-router';
-import user from './user';
 import comic from './comic';
 import wxlogin from './wxlogin';
-import { ensureLogin } from './privilege';
+// import { ensureLogin } from './privilege';
 import { swagDocHandler } from '../utils';
 
 const router = new Router({
@@ -11,15 +10,9 @@ const router = new Router({
 
 router.use('/wxlogin', wxlogin.routes());
 
-// return swagger doc json data.
-// open [http://swagger.daguchuangyi.com/?url=http://localhost:8888/swagger.json#!]
-// to use Swagger UI to visualize the doc
 router.get('/swagger.json', swagDocHandler);
 
-router.use(ensureLogin);
-
-// example user routes providing: [create|login|get] method.
-router.use('/user', user.routes());
+// router.use(ensureLogin);
 
 router.use('/comic', comic.routes());
 

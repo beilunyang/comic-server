@@ -17,9 +17,8 @@ process.on('uncaughtException', err => {
 const app = new Koa();
 
 db.init();
-app.use(bodyParser());
 app.use(cors());
-
+app.use(bodyParser());
 app.use(router.routes());
 
 const port = config[process.env.NODE_ENV || 'develop'].port;

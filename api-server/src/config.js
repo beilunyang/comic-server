@@ -23,5 +23,6 @@ export default {
   wx: {
     appid: 'wx238573b9edd70425',
     secret: 'a4cddfe32a7c7e360a592a910c4fb72f'
-  }
+  },
+  excludeUrls: ['/api/v1/comic/', '/api/v1/wxlogin'],
 };

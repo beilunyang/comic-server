@@ -1,7 +1,8 @@
 import Router from 'koa-router';
 import comic from './comic';
 import wxlogin from './wxlogin';
-// import { ensureLogin } from './privilege';
+import user from './user';
+import { ensureLogin } from './privilege';
 import { swagDocHandler } from '../utils';
 
 const router = new Router({
@@ -12,8 +13,10 @@ router.use('/wxlogin', wxlogin.routes());
 
 router.get('/swagger.json', swagDocHandler);
 
-// router.use(ensureLogin);
+router.use(ensureLogin);
 
 router.use('/comic', comic.routes());
+
+router.use('/user', user.routes());
 
 export default router;

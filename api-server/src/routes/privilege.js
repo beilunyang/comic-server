@@ -1,19 +1,30 @@
-import { User } from 'models';
-export async function ensureLogin(ctx, next) {
-  const token = ctx.headers.authorization;
-  if (token) {
-    ctx.user = await User.findOne({ token });
-  }
-  if (ctx.user) {
-    return next();
-  }
+import Redis from 'ioredis';
+import config from '../config';
 
-  // 不需要权限的路由
-  const excludeUrls = ['/user/create', '/user/login', '/api/v1/comic'];
+const sclient = new Redis({ db: 1, showFriendlyErrorStack: true });
+sclient.on('error', err => console.error(err.message));
+
+export const ensureLogin = async (ctx, next) => {
+  const url = ctx.url;
+  const excludeUrls = config.excludeUrls;
   for (const excludeUrl of excludeUrls) {
-    if (ctx.url.indexOf(excludeUrl) > -1) {
-      return next();
+    if (url.indexOf(excludeUrl) === 0) {
+      return await next();
     }
   }
-  ctx.throw(401, 'not authorized');
-}
+
+  const session_id = ctx.header.authorization;
+  if (!session_id) {
+    ctx.throw(401, '不合法的session_id');
+  } else {
+    const openid = await sclient.get(session_id);
+    if (openid) {
+      ctx.state.openid = openid;
+      await next();
+    } else {
+      ctx.throw(401, '无效的session_id');
+    }
+  }
+};
+
+

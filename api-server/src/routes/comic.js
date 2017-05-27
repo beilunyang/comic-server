@@ -103,9 +103,16 @@ router.get('/recommend', async (ctx) => {
   ctx.body = await Recommend.find();
 });
 
-router.get('/:id', async (ctx) => {
-  console.log('get chapter');
-  const mid = Number(ctx.params.id);
+router.get('/:mid/chapter/:pid', async (ctx) => {
+  console.log('get comic chapter');
+  const mid = Number(ctx.params.mid);
+  const pid = Number(ctx.params.pid);
+  ctx.body = await Chapter.find({ mid, pid }).select('-__v -_id').exec();
+});
+
+router.get('/:mid', async (ctx) => {
+  console.log('get comic');
+  const mid = Number(ctx.params.mid);
   // TODO: 性能优化
   const comic = await Comic.findOne({ mid }).select('-__v -_id').exec();
   const p = [];

@@ -132,7 +132,7 @@ class MongoPipeline(object):
 
 class RedisPipeline(object):
    def open_spider(self, spider):
-      pool = redis.ConnectionPool(host='127.0.0.1', port=6379)
+      pool = redis.ConnectionPool(host='redis', port=6379)
       self.client = redis.Redis(connection_pool=pool)
 
    def close_spider(self, spider):

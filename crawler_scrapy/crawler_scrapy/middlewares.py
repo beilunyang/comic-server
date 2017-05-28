@@ -13,7 +13,7 @@ import re
 
 class DuplicateCheckMiddleware(object):
     def __init__(self):
-        pool = redis.ConnectionPool(host='127.0.0.1', port=6379)
+        pool = redis.ConnectionPool(host='redis', port=6379)
         self.client = redis.Redis(connection_pool=pool)
 
     def process_request(self, request, spider):

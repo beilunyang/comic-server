@@ -68,7 +68,7 @@ const CateSchema = mongoose.Schema({
 });
 
 ComicSchema.index({ mid: 1 }, { unique: true });
-ChapterSchema.index({ cid: 1 }, { unique: true });
+ChapterSchema.index({ pid: 1 }, { unique: true });
 export const Comic = mongoose.model('Comic', ComicSchema);
 export const Chapter = mongoose.model('Chapter', ChapterSchema);
 export const Cate = mongoose.model('Cate', CateSchema);

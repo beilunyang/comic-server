@@ -17,7 +17,7 @@ NEWSPIDER_MODULE = 'crawler_scrapy.spiders'
 
 DATABASE = {
   'db': 'comic',
-	'host': 'localhost',
+	'host': 'mongodb',
 	'port': 27017,
 	'comic_collection': 'comics',
   'chapter_collection': 'chapters'

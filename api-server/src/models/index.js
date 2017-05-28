@@ -1,7 +1,10 @@
 import { User } from './user';
 import { Comic, Chapter, Cate } from './comic';
-import { Theme } from './Theme';
+import { Theme } from './theme';
 import { Recommend } from './recommend';
+import { Collection } from './collection';
+import { Record } from './record';
+
 export {
   User,
   Comic,
@@ -9,4 +12,6 @@ export {
   Cate,
   Theme,
   Recommend,
+  Collection,
+  Record,
 };

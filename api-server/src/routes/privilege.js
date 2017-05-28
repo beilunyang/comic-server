@@ -15,14 +15,14 @@ export const ensureLogin = async (ctx, next) => {
 
   const session_id = ctx.header.authorization;
   if (!session_id) {
-    ctx.throw(401, '不合法的session_id');
+    ctx.throw(401, '验证失败');
   } else {
     const openid = await sclient.get(session_id);
     if (openid) {
       ctx.state.openid = openid;
       await next();
     } else {
-      ctx.throw(401, '无效的session_id');
+      ctx.throw(401, '验证失败');
     }
   }
 };

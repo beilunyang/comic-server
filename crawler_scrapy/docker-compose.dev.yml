@@ -1,0 +1,32 @@
+
+version: '2'
+
+services:
+
+  nginx:
+    image: daocloud.io/library/nginx:latest
+    restart: always
+    privileged: false
+    ports:
+      - 80:80
+
+  mongodb:
+    image: daocloud.io/library/mongo:latest
+    restart: always
+    privileged: false
+    volumes:
+      - /tmp/db:/data/db
+
+  redis:
+    image: daocloud.io/library/redis:latest
+    restart: always
+    privileged: false
+
+  crawler:
+    image: crawler_scrapy:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    links:
+      - mongodb
+      - redis

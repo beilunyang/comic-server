@@ -1,13 +1,5 @@
 import Router from 'koa-router';
-import Redis from 'ioredis';
-
-// record
-const client = new Redis({ db: 2, showFriendlyErrorStack: true });
-client.on('error', err => console.error(err.message));
-
-// collection
-const colClient = new Redis({ db: 3, showFriendlyErrorStack: true });
-colClient.on('error', err => console.error(err.message));
+import { Record, Collection } from '../models';
 
 const router = new Router();
 
@@ -16,34 +8,43 @@ router.post('/record', async (ctx) => {
   const record = ctx.request.body;
   if (record) {
     const { mid, pid, cover, title } = record;
-    const mc = JSON.stringify({ pid, cover, title });
     const openid = ctx.state.openid;
-    await client.hset(openid, mid, mc);
-    await client.expire(openid, 7 * 24 * 60 * 60);
+    await Record.findOneAndUpdate({ mid }, { openid, mid, pid, cover, title }, { upsert: true });
     ctx.body = {
       status: 'ok',
       message: '新增阅读记录成功',
     };
   } else {
-    ctx.body = {
-      status: 'fail',
-      message: '新增阅读记录失败',
-    };
+    ctx.throw(400, '内容不能为空');
   }
 });
 
 router.get('/record', async (ctx) => {
   console.log('get read records');
   const openid = ctx.state.openid;
-  ctx.body = await client.hgetall(openid);
+  ctx.body = await Record.find({ openid }).select('-__id -_v');
 });
 
-router.post('/collection', (ctx) => {
+router.post('/collection', async (ctx) => {
   console.log('add a collection');
+  const collection = ctx.request.body;
+  if (collection) {
+    const { title, mid, cover } = collection;
+    const openid = ctx.state.openid;
+    await Collection.save({ openid, title, mid, cover });
+    ctx.body = {
+      status: 'ok',
+      message: '收藏成功',
+    };
+  } else {
+    ctx.throw(400, '内容不能为空');
+  }
 });
 
-router.get('/collection', (ctx) => {
+router.get('/collection', async (ctx) => {
   console.log('get collections');
+  const openid = ctx.state.openid;
+  ctx.body = await Collection.find({ openid }).select('-__id -_v');
 });
 
 export default router;

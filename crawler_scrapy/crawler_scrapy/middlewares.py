@@ -13,13 +13,13 @@ import re
 
 class DuplicateCheckMiddleware(object):
     def __init__(self):
-        pool = redis.ConnectionPool(host='redis', port=6379)
+        pool = redis.ConnectionPool(host='localhost', port=6379)
         self.client = redis.Redis(connection_pool=pool)
 
     def process_request(self, request, spider):
-        result = re.search(r'chapter\/\d+\/(\d+)\.json', request.url)
+        result = re.search(r'chapter\/(\d+)\/(\d+)\.json', request.url)
         if result:
-            flag = self.client.sismember('successChapter', result.group(1))
+            flag = self.client.sismember('successChapter', '%s:%s' %(result.group(1), result.group(2)))
             if flag:
                 raise IgnoreRequest
         return None

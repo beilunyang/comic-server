@@ -5,6 +5,7 @@ const RecordSchema = mongoose.Schema({
   mid: Number,
   pid: Number,
   cover: String,
+  openid: String,
 });
 
 // RecordSchema.index({ mid: 1, pid: 1 }, { unique: true });

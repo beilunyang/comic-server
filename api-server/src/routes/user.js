@@ -19,10 +19,20 @@ router.post('/record', async (ctx) => {
   }
 });
 
+router.get('/record/:mid', async (ctx) => {
+  console.log('get read record some comic');
+  const openid = ctx.state.openid;
+  const mid = Number(ctx.params.mid);
+  if (isNaN(mid)) {
+    return ctx.throw(400, '无效的mid');
+  }
+  ctx.body = await Record.findOne({ openid, mid }).select('-_id pid title');
+});
+
 router.get('/record', async (ctx) => {
   console.log('get read records');
   const openid = ctx.state.openid;
-  ctx.body = await Record.find({ openid }).select('-__id -_v');
+  ctx.body = await Record.find({ openid }).limit(30).select('-_id -__v');
 });
 
 router.post('/collection', async (ctx) => {

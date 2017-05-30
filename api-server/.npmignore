@@ -38,6 +38,7 @@ jspm_packages
 
 # Custom
 dist
+debug
 influxdb
 
 # MAC OS X

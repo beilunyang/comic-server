@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/log.js"],"names":["setLevel"],"mappings":";;;;;;AAAA;;;;;;AACA,mBAAIA,QAAJ,CAAa,OAAb","file":"log.js","sourcesContent":["import log from 'loglevel';\nlog.setLevel('trace');\n\nexport default log;\n"]}

@@ -15,18 +15,33 @@ router.get('/page/:page', async (ctx) => {
 
 router.get('/cate', async (ctx) => {
   console.log('get cate');
-  ctx.body = await Cate.find().select('-__v').exec();
+  ctx.body = await Cate.find().select('-__v').sort({ _id: -1 }).exec();
 });
 
 
 router.get('/cate/:cate/page/:page', async (ctx) => {
   console.log('get cate comic');
+  const cate = ctx.params.cate;
   let page = Number(ctx.params.page);
   if (isNaN(page) || page < 1) {
     page = 1;
   }
-  if (page === 1) {
-    const [comics, total] = await Promise.all([
+  if (page !== 1) {
+    let comics = [];
+    if (cate !== '全部') {
+      comics = await Comic.find({
+        types: { $in: [ctx.params.cate] },
+      }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
+    } else {
+      comics = await Comic.find().skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
+    }
+    ctx.body = { comics: comics || [] };
+    return;
+  }
+
+  let result = [];
+  if (cate !== '全部') {
+    result = await Promise.all([
       Comic.find({
         types: { $in: [ctx.params.cate] },
       }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec(),
@@ -34,15 +49,17 @@ router.get('/cate/:cate/page/:page', async (ctx) => {
         types: { $in: [ctx.params.cate] },
       }).count(),
     ]);
-    ctx.body = {
-      total,
-      comics,
-    };
-    return;
+  } else {
+    result = await Promise.all([
+      Comic.find().skip((page - 1) * 15).limit(15).select('-__v -_id').exec(),
+      Comic.find().count(),
+    ]);
   }
-  ctx.body = await Comic.find({
-    types: { $in: [ctx.params.cate] },
-  }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
+  const [comics, total] = result;
+  ctx.body = {
+    total,
+    comics: comics || [],
+  };
 });
 
 router.get('/search/:keyword/page/:page', async (ctx) => {
@@ -77,11 +94,11 @@ router.get('/search/:keyword/page/:page', async (ctx) => {
     ]);
     ctx.body = {
       total,
-      comics,
+      comics: comics || [],
     };
     return;
   }
-  ctx.body = await Comic.find({
+  const comics = await Comic.find({
     $or: [
       {
         title: regx,
@@ -91,6 +108,9 @@ router.get('/search/:keyword/page/:page', async (ctx) => {
       },
     ]
   }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
+  ctx.body = {
+    comics: comics || [],
+  };
 });
 
 router.get('/theme', async (ctx) => {

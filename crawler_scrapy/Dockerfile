@@ -1,6 +1,5 @@
-FROM daocloud.io/library/python:latest
+FROM daocloud.io/library/python:3.6.1-alpine
 MAINTAINER beilunyang <786220806@qq.com>
-RUN apt-get -y update && apt-get install -y cron
 ENV DIR /wwwroot
 RUN mkdir $DIR
 WORKDIR $DIR

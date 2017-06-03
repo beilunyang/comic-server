@@ -1,6 +1,6 @@
 {
-  "name": "koa2-api",
-  "version": "1.0.0",
+  "name": "api-server",
+  "version": "0.0.1",
   "description": "",
   "scripts": {
     "clean": "rimraf dist",

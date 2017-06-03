@@ -69,46 +69,46 @@ router.get('/search/:keyword/page/:page', async (ctx) => {
   if (isNaN(page) || page < 1) {
     page = 1;
   }
-  if (page === 1) {
-    const [comics, total] = await Promise.all([
-      Comic.find({
-        $or: [
-          {
-            title: regx,
-          },
-          {
-            authors: { $in: [regx] },
-          },
-        ]
-      }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec(),
-      Comic.find({
-        $or: [
-          {
-            title: regx,
-          },
-          {
-            authors: { $in: [regx] },
-          },
-        ]
-      }).count(),
-    ]);
+  if (page !== 1) {
+    const comics = await Comic.find({
+      $or: [
+        {
+          title: regx,
+        },
+        {
+          authors: { $in: [regx] },
+        },
+      ]
+    }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
     ctx.body = {
-      total,
       comics: comics || [],
     };
     return;
   }
-  const comics = await Comic.find({
-    $or: [
-      {
-        title: regx,
-      },
-      {
-        authors: { $in: [regx] },
-      },
-    ]
-  }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec();
+  const [comics, total] = await Promise.all([
+    Comic.find({
+      $or: [
+        {
+          title: regx,
+        },
+        {
+          authors: { $in: [regx] },
+        },
+      ]
+    }).skip((page - 1) * 15).limit(15).select('-__v -_id').exec(),
+    Comic.find({
+      $or: [
+        {
+          title: regx,
+        },
+        {
+          authors: { $in: [regx] },
+        },
+      ]
+    }).count(),
+  ]);
   ctx.body = {
+    total,
     comics: comics || [],
   };
 });

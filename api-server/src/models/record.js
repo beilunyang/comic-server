@@ -4,10 +4,10 @@ const RecordSchema = mongoose.Schema({
   title: String,
   mid: Number,
   pid: Number,
-  cover: String,
+  origin_cover: String,
   openid: String,
 });
 
-// RecordSchema.index({ mid: 1, pid: 1 }, { unique: true });
+RecordSchema.index({ mid: 1, openid: 1 }, { unique: true });
 
 export const Record = mongoose.model('Record', RecordSchema);

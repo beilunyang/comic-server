@@ -4,6 +4,7 @@ import { Theme } from './theme';
 import { Recommend } from './recommend';
 import { Collection } from './collection';
 import { Record } from './record';
+import { Slide } from './slide';
 
 export {
   User,
@@ -14,4 +15,5 @@ export {
   Recommend,
   Collection,
   Record,
+  Slide,
 };

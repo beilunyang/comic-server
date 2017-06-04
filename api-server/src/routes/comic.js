@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { Comic, Chapter, Theme, Cate, Recommend } from '../models';
+import { Comic, Chapter, Theme, Cate, Recommend, Slide } from '../models';
 
 const router = new Router();
 
@@ -111,6 +111,11 @@ router.get('/search/:keyword/page/:page', async (ctx) => {
     total,
     comics: comics || [],
   };
+});
+
+router.get('/slide', async (ctx) => {
+  console.log('get silde');
+  ctx.body = await Slide.find();
 });
 
 router.get('/theme', async (ctx) => {

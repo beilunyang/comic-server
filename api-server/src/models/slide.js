@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
 const SlideSchema = mongoose.Schema({
-  mid: String,
+  mid: Number,
   cover: String,
+  title: String,
 });
 
 SlideSchema.index({ mid: 1 }, { unique: true });

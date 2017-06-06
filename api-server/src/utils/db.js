@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import log from 'log';
 import config from '../config';
 
 const { host, database, user, password } = config[process.env.NODE_ENV || 'develop'].mongodb;
@@ -17,12 +16,12 @@ const init = () => {
     return new Promise((resolve, reject) => {
       db.on('error', err => {
         status = 'DISCONNETED';
-        log.error(err);
+        console.error(err);
         reject(err);
       });
       db.once('open', () => {
         status = 'CONNECTED';
-        log.info('Database connected');
+        console.info('Database connected');
         resolve();
       });
     });

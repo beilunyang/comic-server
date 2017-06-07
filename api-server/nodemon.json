@@ -1,0 +1,14 @@
+{
+  "restartable": "rs",
+  "verbose": false,
+  "env": {
+    "NODE_ENV": "develop"
+  },
+  "execMap": {
+    "js": "node --debug"
+  },
+  "watch": [
+    "src/"
+  ],
+  "ext": "js json"
+}

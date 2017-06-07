@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const SlideSchema = mongoose.Schema({
   mid: Number,
@@ -8,4 +8,4 @@ const SlideSchema = mongoose.Schema({
 
 SlideSchema.index({ mid: 1 }, { unique: true });
 
-export const Slide = mongoose.model('Slide', SlideSchema);
+exports.Slide = mongoose.model('Slide', SlideSchema);

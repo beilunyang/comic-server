@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const ThemeSchema = mongoose.Schema({
   title: String,
   comics: Array,
 });
 
-export const Theme = mongoose.model('Theme', ThemeSchema);
+exports.Theme = mongoose.model('Theme', ThemeSchema);

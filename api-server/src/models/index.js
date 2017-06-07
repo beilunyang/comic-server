@@ -1,12 +1,12 @@
-import { User } from './user';
-import { Comic, Chapter, Cate } from './comic';
-import { Theme } from './theme';
-import { Recommend } from './recommend';
-import { Collection } from './collection';
-import { Record } from './record';
-import { Slide } from './slide';
+const { User } = require('./user');
+const { Comic, Chapter, Cate } = require('./comic');
+const { Theme } = require('./theme');
+const { Recommend } = require('./recommend');
+const { Collection } = require('./collection');
+const { Record } = require('./record');
+const { Slide } = require('./slide');
 
-export {
+module.exports = {
   User,
   Comic,
   Chapter,

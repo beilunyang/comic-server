@@ -1,9 +1,9 @@
-import Router from 'koa-router';
-import comic from './comic';
-import wxlogin from './wxlogin';
-import user from './user';
-import { ensureLogin } from './privilege';
-import { swagDocHandler } from '../utils';
+const Router = require('koa-router');
+const comic = require('./comic');
+const wxlogin = require('./wxlogin');
+const user = require('./user');
+const { ensureLogin } = require('./privilege');
+const { swagDocHandler } = require('../utils');
 
 const router = new Router({
   prefix: '/api/v1',
@@ -19,4 +19,4 @@ router.use('/comic', comic.routes());
 
 router.use('/user', user.routes());
 
-export default router;
+module.exports = router;

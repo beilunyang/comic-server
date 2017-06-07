@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const CollectionSchema = mongoose.Schema({
   title: String,
@@ -10,4 +10,4 @@ const CollectionSchema = mongoose.Schema({
 
 CollectionSchema.index({ mid: 1, openid: 1 }, { unique: true });
 
-export const Collection = mongoose.model('Collection', CollectionSchema);
+exports.Collection = mongoose.model('Collection', CollectionSchema);

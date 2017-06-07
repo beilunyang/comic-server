@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const RecommendSchema = mongoose.Schema({
   mid: {
@@ -9,4 +9,4 @@ const RecommendSchema = mongoose.Schema({
   },
 });
 
-export const Recommend = mongoose.model('Recommend', RecommendSchema);
+exports.Recommend = mongoose.model('Recommend', RecommendSchema);

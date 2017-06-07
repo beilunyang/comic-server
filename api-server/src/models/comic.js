@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const ComicSchema = mongoose.Schema({
   title: {
@@ -69,9 +69,9 @@ const CateSchema = mongoose.Schema({
 
 ComicSchema.index({ mid: 1 }, { unique: true });
 ChapterSchema.index({ pid: 1 }, { unique: true });
-export const Comic = mongoose.model('Comic', ComicSchema);
-export const Chapter = mongoose.model('Chapter', ChapterSchema);
-export const Cate = mongoose.model('Cate', CateSchema);
+exports.Comic = mongoose.model('Comic', ComicSchema);
+exports.Chapter = mongoose.model('Chapter', ChapterSchema);
+exports.Cate = mongoose.model('Cate', CateSchema);
 
 
 

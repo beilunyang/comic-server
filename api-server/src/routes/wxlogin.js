@@ -1,12 +1,13 @@
-import Router from 'koa-router';
-import axios from 'axios';
-import Redis from 'ioredis';
-import crypto from 'crypto';
-import config from '../config';
-import { User } from '../models';
+const Router = require('koa-router');
+const axios = require('axios');
+const Redis = require('ioredis');
+const crypto = require('crypto');
+const config = require('../config');
+const { User } = require('../models');
+const logger = require('../utils').logger.dbLogger;
 
 const sclient = new Redis({ db: 1 });
-sclient.on('error', err => console.error(err.message));
+sclient.on('error', err => logger.error(err));
 
 const router = new Router();
 
@@ -37,4 +38,4 @@ router.post('/', async (ctx) => {
   }
 });
 
-export default router;
+module.exports = router;

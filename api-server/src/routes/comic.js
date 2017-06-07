@@ -1,10 +1,11 @@
-import Router from 'koa-router';
-import { Comic, Chapter, Theme, Cate, Recommend, Slide } from '../models';
+const Router = require('koa-router');
+const { Comic, Chapter, Theme, Cate, Recommend, Slide } = require('../models');
+const { logger } = require('../utils');
 
 const router = new Router();
 
 router.get('/page/:page', async (ctx) => {
-  console.log('get ComicList');
+  logger.debug('get ComicList');
   let page = Number(ctx.params.page);
   if (isNaN(page) || !page) {
     page = 1;
@@ -14,13 +15,13 @@ router.get('/page/:page', async (ctx) => {
 });
 
 router.get('/cate', async (ctx) => {
-  console.log('get cate');
+  logger.debug('get cate');
   ctx.body = await Cate.find().select('-__v').sort({ _id: -1 }).exec();
 });
 
 
 router.get('/cate/:cate/page/:page', async (ctx) => {
-  console.log('get cate comic');
+  logger.debug('get cate comic');
   const cate = ctx.params.cate;
   let page = Number(ctx.params.page);
   if (isNaN(page) || page < 1) {
@@ -63,7 +64,7 @@ router.get('/cate/:cate/page/:page', async (ctx) => {
 });
 
 router.get('/search/:keyword/page/:page', async (ctx) => {
-  console.log('search');
+  logger.debug('search');
   const regx = new RegExp(ctx.params.keyword, 'i');
   let page = Number(ctx.params.page);
   if (isNaN(page) || page < 1) {
@@ -114,29 +115,29 @@ router.get('/search/:keyword/page/:page', async (ctx) => {
 });
 
 router.get('/slide', async (ctx) => {
-  console.log('get silde');
+  logger.debug('get silde');
   ctx.body = await Slide.find();
 });
 
 router.get('/theme', async (ctx) => {
-  console.log('get themes');
+  logger.debug('get themes');
   ctx.body = await Theme.find();
 });
 
 router.get('/recommend', async (ctx) => {
-  console.log('get recommend');
+  logger.debug('get recommend');
   ctx.body = await Recommend.find();
 });
 
 router.get('/:mid/chapter/:pid', async (ctx) => {
-  console.log('get comic chapter');
+  logger.debug('get comic chapter');
   const mid = Number(ctx.params.mid);
   const pid = Number(ctx.params.pid);
   ctx.body = await Chapter.find({ mid, pid }).select('-__v -_id').exec();
 });
 
 router.get('/:mid', async (ctx) => {
-  console.log('get comic');
+  logger.debug('get comic');
   const mid = Number(ctx.params.mid);
   // TODO: 性能优化
   const comic = await Comic.findOne({ mid }).select('-__v -_id').exec();
@@ -151,4 +152,4 @@ router.get('/:mid', async (ctx) => {
   ctx.body = c;
 });
 
-export default router;
+module.exports = router;

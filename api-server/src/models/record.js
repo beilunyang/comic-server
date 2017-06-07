@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const RecordSchema = mongoose.Schema({
   title: String,
@@ -10,4 +10,4 @@ const RecordSchema = mongoose.Schema({
 
 RecordSchema.index({ mid: 1, openid: 1 }, { unique: true });
 
-export const Record = mongoose.model('Record', RecordSchema);
+exports.Record = mongoose.model('Record', RecordSchema);

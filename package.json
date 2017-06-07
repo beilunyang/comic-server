@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "koa2-winston": "^1.6.4"
+  }
+}

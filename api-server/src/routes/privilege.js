@@ -1,10 +1,11 @@
-import Redis from 'ioredis';
-import config from '../config';
+const Redis = require('ioredis');
+const config = require('../config');
+const logger = require('../utils').logger.dbLogger;
 
 const sclient = new Redis({ db: 1, showFriendlyErrorStack: true });
-sclient.on('error', err => console.error(err.message));
+sclient.on('error', err => logger.error(err));
 
-export const ensureLogin = async (ctx, next) => {
+exports.ensureLogin = async (ctx, next) => {
   const url = ctx.url;
   const excludeUrls = config.excludeUrls;
   for (const excludeUrl of excludeUrls) {

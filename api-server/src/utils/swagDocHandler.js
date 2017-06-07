@@ -1,7 +1,7 @@
-import path from 'path';
-import swagger from 'swagger-jsdoc';
+const path = require('path');
+const swagger = require('swagger-jsdoc');
 
-export default async function swaggerDoc(ctx) {
+module.exports = async function swaggerDoc(ctx) {
   // swagger definition comes here
   const swaggerDefinition = {
     info: {
@@ -17,4 +17,4 @@ export default async function swaggerDoc(ctx) {
 
   const swaggerSpec = swagger(options);
   ctx.body = swaggerSpec;
-}
+};

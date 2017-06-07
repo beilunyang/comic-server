@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
-import config from '../config';
+const mongoose = require('mongoose');
+const config = require('../config');
+const logger = require('./log').dbLogger;
 
 const { host, database, user, password } = config[process.env.NODE_ENV || 'develop'].mongodb;
 let status = 'DISCONNETED';
@@ -16,16 +17,16 @@ const init = () => {
     return new Promise((resolve, reject) => {
       db.on('error', err => {
         status = 'DISCONNETED';
-        console.error(err);
+        logger.error(err);
         reject(err);
       });
       db.once('open', () => {
         status = 'CONNECTED';
-        console.info('Database connected');
+        logger.info('Database connected');
         resolve();
       });
     });
   }
 };
 
-export default { init };
+module.exports = { init };

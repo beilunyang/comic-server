@@ -1,4 +1,5 @@
-import swagDocHandler from './swagDocHandler';
-import db from './db';
+const swagDocHandler = require('./swagDocHandler');
+const db = require('./db');
+const logger = require('./log');
 
-export { swagDocHandler, db };
+module.exports = { swagDocHandler, db, logger };

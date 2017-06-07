@@ -1,10 +1,11 @@
-import Router from 'koa-router';
-import { Record, Collection } from '../models';
+const Router = require('koa-router');
+const { Record, Collection } = require('../models');
+const { logger } = require('../utils');
 
 const router = new Router();
 
 router.post('/record', async (ctx) => {
-  console.log('add a read record');
+  logger.debug('add a read record');
   const record = ctx.request.body;
   if (record) {
     const { mid, pid, origin_cover, title } = record;
@@ -20,7 +21,7 @@ router.post('/record', async (ctx) => {
 });
 
 router.get('/record/:mid', async (ctx) => {
-  console.log('get read record some comic');
+  logger.debug('get read record some comic');
   const openid = ctx.state.openid;
   const mid = Number(ctx.params.mid);
   if (isNaN(mid)) {
@@ -30,14 +31,14 @@ router.get('/record/:mid', async (ctx) => {
 });
 
 router.get('/record', async (ctx) => {
-  console.log('get read records');
+  logger.debug('get read records');
   const openid = ctx.state.openid;
   const comics = await Record.find({ openid }).limit(30).select('-_id -__v').exec();
   ctx.body = comics || [];
 });
 
 router.get('/collection/:mid', async (ctx) => {
-  console.log('get a collection');
+  logger.debug('get a collection');
   const openid = ctx.state.openid;
   const mid = Number(ctx.params.mid);
   if (isNaN(mid)) {
@@ -58,7 +59,7 @@ router.get('/collection/:mid', async (ctx) => {
 });
 
 router.get('/collection/page/:page', async (ctx) => {
-  console.log('get collections');
+  logger.debug('get collections');
   const openid = ctx.state.openid;
   let page = Number(ctx.params.page);
   if (isNaN(page) || page < 1) {
@@ -80,7 +81,7 @@ router.get('/collection/page/:page', async (ctx) => {
 });
 
 router.post('/collection', async (ctx) => {
-  console.log('add a collection');
+  logger.debug('add a collection');
   const collection = ctx.request.body;
   if (collection) {
     const { mid, origin_cover, title, authors } = collection;
@@ -96,7 +97,7 @@ router.post('/collection', async (ctx) => {
 });
 
 router.post('/de_collection', async (ctx) => {
-  console.log('cancel a collection');
+  logger.debug('cancel a collection');
   const { mid } = ctx.request.body;
   if (mid) {
     const openid = ctx.state.openid;
@@ -110,4 +111,4 @@ router.post('/de_collection', async (ctx) => {
   }
 });
 
-export default router;
+module.exports = router;

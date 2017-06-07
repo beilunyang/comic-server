@@ -9,6 +9,7 @@ let logger = new winston.Logger({
     new winston.transports.Console({
       colorize: true,
       timestamp: formatTime,
+      json: false,
     }),
   ],
 });
@@ -18,6 +19,7 @@ logger.dbLogger = new winston.Logger({
     new winston.transports.Console({
       colorize: true,
       timestamp: formatTime,
+      json: false,
     }),
   ],
 });
@@ -77,7 +79,6 @@ if (process.env.NODE_ENV === 'production') {
   const crashLogger = new winston.Logger({
     transports: [
       new winston.transports.File({
-        name: 'error',
         filename: '/log/crash.log',
         level: 'error',
         handleExceptions: true,

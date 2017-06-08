@@ -2,7 +2,7 @@ const Redis = require('ioredis');
 const config = require('../config');
 const logger = require('../utils').logger.dbLogger;
 
-const sclient = new Redis({ db: 1, showFriendlyErrorStack: true });
+const sclient = new Redis({ db: 1, showFriendlyErrorStack: true, host: 'redis' });
 sclient.on('error', err => logger.error(err));
 
 exports.ensureLogin = async (ctx, next) => {

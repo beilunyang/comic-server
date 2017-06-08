@@ -2,38 +2,30 @@ version: '2'
 
 services:
 
-  nginx:
-    image: nginx:latest
+  proxy:
+    image: proxy:dev
     build: 
       context: .
-      dockerfile: Dockerfile.nginx
+      dockerfile: Dockerfile.dev.proxy
     restart: always
     privileged: false
     ports:
-      - 80:80
+      - 8080:8080
+      - 2333:2333
+    links:
+      - api-server
 
   mongodb:
     image: daocloud.io/library/mongo:3.5
     restart: always
     privileged: false
     volumes:
-      - /tmp/db:/data/db
+      - /data/db:/data/db
 
   redis:
     image: daocloud.io/library/redis:3.2.8-alpine
     restart: always
     privileged: false
-
-  crawler:
-    image: crawler_scrapy:latest
-    build:
-      context: ./crawler_scrapy
-      dockerfile: Dockerfile
-    links:
-      - mongodb
-      - redis
-    volumes:
-      - /Users/beilunyang/Code/manhua/crawler_scrapy:/wwwroot
   
   api-server:
     image: api-server:dev

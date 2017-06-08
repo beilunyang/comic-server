@@ -1,0 +1,7 @@
+FROM daocloud.io/library/nginx:1.13.0-alpine
+MAINTAINER beilunyang <786220806@qq.com>
+ADD ./proxy.dev.conf /etc/nginx/conf.d/
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+CMD ["nginx"]
+EXPOSE 8080
+EXPOSE 2333

@@ -6,7 +6,7 @@ const config = require('../config');
 const { User } = require('../models');
 const logger = require('../utils').logger.dbLogger;
 
-const sclient = new Redis({ db: 1 });
+const sclient = new Redis({ db: 1, host: 'redis' });
 sclient.on('error', err => logger.error(err));
 
 const router = new Router();

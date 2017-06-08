@@ -3,11 +3,17 @@ version: '2'
 services:
 
   nginx:
-    image: daocloud.io/library/nginx:1.13.0-alpine
+    image: nginx:latest
+    build: 
+      context: .
+      dockerfile: Dockerfile.nginx
     restart: always
     privileged: false
     ports:
       - 80:80
+      - 2333:2333
+    links:
+      - api-server
 
   mongodb:
     image: daocloud.io/library/mongo:3.5

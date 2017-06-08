@@ -4,6 +4,6 @@ ENV DIR /wwwroot
 RUN mkdir $DIR
 WORKDIR $DIR
 ADD . $DIR
-RUN npm install && npm run build
-CMD ['npm', 'serve']
+RUN npm install --production
+CMD ["npm", "run", "serve"]
 EXPOSE 8888

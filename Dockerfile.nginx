@@ -1,0 +1,5 @@
+FROM daocloud.io/library/nginx:1.13.0-alpine
+MAINTAINER beilunyang <786220806@qq.com>
+ADD ./nginx.conf /etc/nginx/conf.d/
+CMD ['nginx']
+EXPOSE 80

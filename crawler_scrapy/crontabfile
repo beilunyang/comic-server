@@ -1,0 +1,1 @@
+0 3 * * * cd /wwwroot && scrapy crawl new_comic >> /wwwroot/new_comic.log 2>&1 &

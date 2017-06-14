@@ -1,1 +1,1 @@
-0 3 * * * cd /wwwroot && scrapy crawl new_comic >> /wwwroot/new_comic.log 2>&1 &
+* 3 * * * cd /wwwroot && /usr/local/bin/scrapy crawl new_comic >> ./new_comic.log 2>&1 &

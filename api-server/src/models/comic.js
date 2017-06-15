@@ -65,6 +65,10 @@ const CateSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  cover: {
+    type: String,
+    required: true,
+  },
 });
 
 ComicSchema.index({ mid: 1 }, { unique: true });

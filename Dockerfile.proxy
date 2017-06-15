@@ -4,4 +4,3 @@ ADD ./proxy.conf /etc/nginx/conf.d/
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 CMD ["nginx"]
 EXPOSE 80
-EXPOSE 2333

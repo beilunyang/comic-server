@@ -20,7 +20,9 @@ services:
     restart: always
     privileged: false
     volumes:
-      - /data/db:/data/db
+      - /usr/local/var/mongodb:/data/db
+    ports:
+      - 27777:27017
 
   redis:
     image: daocloud.io/library/redis:3.2.8-alpine

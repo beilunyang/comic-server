@@ -133,7 +133,7 @@ router.get('/:mid/chapter/:pid', async (ctx) => {
   logger.debug('get comic chapter');
   const mid = Number(ctx.params.mid);
   const pid = Number(ctx.params.pid);
-  ctx.body = await Chapter.find({ mid, pid }).select('-__v -_id').exec();
+  ctx.body = await Chapter.findOne({ mid, pid }).select('-__v -_id').exec();
 });
 
 router.get('/:mid', async (ctx) => {

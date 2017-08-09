@@ -76,6 +76,3 @@ ChapterSchema.index({ pid: 1 }, { unique: true });
 exports.Comic = mongoose.model('Comic', ComicSchema);
 exports.Chapter = mongoose.model('Chapter', ChapterSchema);
 exports.Cate = mongoose.model('Cate', CateSchema);
-
-
-

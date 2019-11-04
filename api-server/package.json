@@ -22,7 +22,7 @@
     "koa-router": "^7.0.1",
     "koa2-winston": "^1.6.4",
     "moment": "^2.18.1",
-    "mongoose": "^4.7.7",
+    "mongoose": "^5.7.5",
     "swagger-jsdoc": "^1.8.2",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6"

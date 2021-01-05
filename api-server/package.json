@@ -14,7 +14,7 @@
     "nodemon": "^1.11.0"
   },
   "dependencies": {
-    "axios": "^0.16.1",
+    "axios": "^0.21.1",
     "ioredis": "^3.0.0",
     "kcors": "^2.2.0",
     "koa": "^2.2.0",
